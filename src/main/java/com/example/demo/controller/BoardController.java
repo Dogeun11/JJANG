@@ -1,28 +1,30 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Comment;
+import com.example.demo.repository.CommentRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Controller
 public class BoardController {
 
-    private final List<Comment> comments = new ArrayList<>();
+    private final CommentRepository commentRepository;
+
+    public BoardController(CommentRepository commentRepository) {
+        this.commentRepository = commentRepository;
+    }
 
     @GetMapping("/board")
     public String board(Model model) {
-        model.addAttribute("comments", comments);
+        model.addAttribute("comments", commentRepository.findAll());
         model.addAttribute("newComment", new Comment());
         return "board";
     }
 
     @PostMapping("/board")
     public String postComment(@ModelAttribute Comment newComment) {
-        comments.add(newComment);
+        commentRepository.save(newComment);
         return "redirect:/board";
     }
 }
