@@ -25,6 +25,6 @@ public class BoardController {
     @PostMapping("/board")
     public String postComment(@ModelAttribute Comment newComment) {
         commentRepository.save(newComment);
-        return "redirect:/board";
+        return "redirect:/board"; //어떻게 알았지?
     }
 }
